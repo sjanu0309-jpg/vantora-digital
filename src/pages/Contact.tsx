@@ -85,6 +85,7 @@ export default function Contact() {
     lastSubmit.current = fingerprint;
 
     if (!site.formEndpoint) {
+      trackEvent('generate_lead', { service: f.service || 'unspecified', channel: 'whatsapp_email' });
       setStatus('offline');
       return;
     }
