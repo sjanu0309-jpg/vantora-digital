@@ -1,5 +1,5 @@
 declare global {
-  interface Window { dataLayer: unknown[]; gtag?: (...args: unknown[]) => void }
+  interface Window { dataLayer: unknown[]; gtag?: (...args: unknown[]) => void; fbq?: (...args: unknown[]) => void }
 }
 
 let loaded = false;
@@ -17,6 +17,16 @@ export function loadAnalytics(id: string) {
   window.gtag('config', id, { anonymize_ip: true });
 }
 
+/** Meta Pixel standard events matching our GA4 event names. */
+const META_EVENTS: Record<string, string> = { generate_lead: 'Lead' };
+
 export function trackEvent(name: string, params: Record<string, unknown> = {}) {
   window.gtag?.('event', name, params);
+  const metaEvent = META_EVENTS[name];
+  if (metaEvent) window.fbq?.('track', metaEvent, params);
+}
+
+/** Meta Pixel PageView for client-side route changes (first load is tracked in index.html). */
+export function trackPageView() {
+  window.fbq?.('track', 'PageView');
 }
