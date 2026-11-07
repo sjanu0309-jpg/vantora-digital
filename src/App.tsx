@@ -1,4 +1,4 @@
-import { lazy, Suspense, useEffect } from 'react';
+import { lazy, Suspense, useEffect, useRef } from 'react';
 import { Routes, Route, useLocation } from 'react-router-dom';
 import { AnimatePresence, motion, useReducedMotion } from 'framer-motion';
 import { Header } from './components/Header';
@@ -6,6 +6,7 @@ import { Footer } from './components/Footer';
 import { FloatingActions } from './components/FloatingActions';
 import { CookieNotice } from './components/CookieNotice';
 import Home from './pages/Home';
+import { trackPageView } from './lib/analytics';
 
 const About = lazy(() => import('./pages/About'));
 const Services = lazy(() => import('./pages/Services'));
@@ -21,6 +22,11 @@ const NotFound = lazy(() => import('./pages/NotFound'));
 
 function ScrollManager() {
   const { pathname, hash } = useLocation();
+  const firstLoad = useRef(true);
+  useEffect(() => {
+    if (firstLoad.current) firstLoad.current = false;
+    else trackPageView();
+  }, [pathname]);
   useEffect(() => {
     if (hash) {
       const el = document.getElementById(hash.slice(1));
