@@ -1,4 +1,4 @@
-import { lazy, Suspense, useEffect, useRef } from 'react';
+import { lazy, Suspense, useEffect } from 'react';
 import { Routes, Route, useLocation } from 'react-router-dom';
 import { AnimatePresence, motion, useReducedMotion } from 'framer-motion';
 import { Header } from './components/Header';
@@ -22,10 +22,8 @@ const NotFound = lazy(() => import('./pages/NotFound'));
 
 function ScrollManager() {
   const { pathname, hash } = useLocation();
-  const firstLoad = useRef(true);
   useEffect(() => {
-    if (firstLoad.current) firstLoad.current = false;
-    else trackPageView();
+    trackPageView();
   }, [pathname]);
   useEffect(() => {
     if (hash) {
