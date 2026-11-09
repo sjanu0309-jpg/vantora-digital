@@ -29,6 +29,7 @@ jobs:
           VITE_GOOGLE_SCRIPT_URL: ${{ vars.VITE_GOOGLE_SCRIPT_URL }}
           VITE_GA_ID: ${{ vars.VITE_GA_ID }}
           VITE_BOOKING_URL: ${{ vars.VITE_BOOKING_URL }}
+          VITE_META_CAPI_URL: ${{ vars.VITE_META_CAPI_URL }}
       # GitHub Pages SPA fallback: unknown routes load the app
       - run: cp dist/index.html dist/404.html
       - uses: actions/upload-pages-artifact@v3
